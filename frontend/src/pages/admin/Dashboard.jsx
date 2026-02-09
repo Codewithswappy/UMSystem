@@ -120,7 +120,7 @@ export default function AdminDashboard() {
           <p className="text-gray-500 mt-1">Overview of university performance and activities.</p>
         </div>
         <div className="flex items-center gap-4 w-full md:w-auto">
-          <div className="relative flex-1 md:w-64">
+          <div className="relative flex-1 md:w-64 md:flex-none">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input placeholder="Search..." className="pl-10 bg-white border-none shadow-sm rounded-xl" />
           </div>

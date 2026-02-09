@@ -107,21 +107,21 @@ export default function StudentAttendance() {
           <p className="text-gray-500 mt-2 font-medium">Track your academic presence</p>
         </div>
         
-        <div className="flex items-center gap-6 bg-white px-6 py-3 rounded-2xl shadow-sm border border-gray-100">
-          <div className="flex flex-col items-center">
+        <div className="flex flex-wrap md:flex-nowrap items-center gap-6 bg-white px-6 py-4 rounded-2xl shadow-sm border border-gray-100 justify-between md:justify-start">
+          <div className="flex flex-col items-center min-w-[60px]">
             <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Overall</span>
             <span className={cn(
               "text-2xl font-bold",
               stats.overall >= 75 ? "text-green-500" : "text-orange-500"
             )}>{stats.overall}%</span>
           </div>
-          <div className="w-px h-8 bg-gray-100" />
-          <div className="flex flex-col items-center">
+          <div className="hidden md:block w-px h-8 bg-gray-100" />
+          <div className="flex flex-col items-center min-w-[60px]">
             <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Present</span>
             <span className="text-2xl font-bold text-gray-900">{stats.present}</span>
           </div>
-          <div className="w-px h-8 bg-gray-100" />
-          <div className="flex flex-col items-center">
+          <div className="hidden md:block w-px h-8 bg-gray-100" />
+          <div className="flex flex-col items-center min-w-[60px]">
             <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Absent</span>
             <span className="text-2xl font-bold text-gray-900">{stats.absent}</span>
           </div>

@@ -100,7 +100,7 @@ export default function UserManagement() {
         <CardHeader className="p-8 pb-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <CardTitle className="text-xl font-bold w-full md:w-auto">System Users</CardTitle>
           <div className="flex gap-4 w-full md:w-auto">
-            <div className="relative w-full md:w-64">
+            <div className="relative flex-1 md:w-64 md:flex-none">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input 
                 placeholder="Search users..." 

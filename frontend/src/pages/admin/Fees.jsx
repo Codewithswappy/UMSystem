@@ -107,20 +107,20 @@ export default function AdminFees() {
 
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-end">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Fee Management</h1>
           <p className="text-gray-500 mt-1">Manage student fees, tuition, and payments.</p>
         </div>
         <Button 
-          className="rounded-full bg-black text-white hover:bg-gray-800 shadow-lg px-6"
+          className="w-full md:w-auto rounded-full bg-black text-white hover:bg-gray-800 shadow-lg px-6"
           onClick={() => setIsCreateModalOpen(true)}
         >
           <Plus className="mr-2 h-4 w-4" /> Assign Fee
         </Button>
       </div>
 
-      <div className="flex gap-4 items-center bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+      <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input 

@@ -255,7 +255,7 @@ export default function FacultyClasses() {
 
       {/* Create Modal */}
       <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} title="Create New Class" onSubmit={handleCreate}>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label>Course Name</Label>
             <Input name="name" value={formData.name} onChange={handleInputChange} placeholder="e.g. Intro to CS" required />
@@ -307,7 +307,7 @@ export default function FacultyClasses() {
 
       {/* Edit Modal */}
       <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} title="Manage Class" onSubmit={handleUpdate}>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2 col-span-2">
             <Label>Course Name</Label>
             <Input name="name" value={formData.name} onChange={handleInputChange} required />

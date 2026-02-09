@@ -134,13 +134,13 @@ export default function AdminEvents() {
       initial="hidden"
       animate="visible"
     >
-      <div className="flex flex-col md:flex-row justify-between items-end gap-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Events Management</h1>
           <p className="text-gray-500 mt-1">Create and manage university-wide events.</p>
         </div>
-        <div className="flex gap-3">
-          <div className="relative w-full md:w-64 hidden md:block">
+        <div className="flex gap-3 w-full md:w-auto">
+          <div className="relative flex-1 md:w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input placeholder="Search events..." className="pl-9 bg-white border-none shadow-sm rounded-xl" />
           </div>

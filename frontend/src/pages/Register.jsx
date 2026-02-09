@@ -90,6 +90,13 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate Step 2 fields
+    if (!formData.department || !formData.course) {
+      setError("Please select both Department and Course.");
+      return;
+    }
+
     setLoading(true);
     setError('');
 

@@ -209,7 +209,7 @@ export default function FacultyAttendance() {
           <div className="flex items-center gap-4 w-full md:w-auto">
             {facultySubjects.length > 0 ? (
               <select 
-                className="bg-gray-50 border-none text-gray-900 text-sm rounded-xl focus:ring-orange-500 focus:border-orange-500 block p-2.5 font-bold min-w-[200px]"
+                className="bg-gray-50 border-none text-gray-900 text-sm rounded-xl focus:ring-orange-500 focus:border-orange-500 block p-2.5 font-bold w-full md:w-auto md:min-w-[200px]"
                 value={selectedSubjectId}
                 onChange={(e) => setSelectedSubjectId(e.target.value)}
               >

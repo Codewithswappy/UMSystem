@@ -221,82 +221,86 @@ export default function Applications() {
           </div>
         ) : (
           <div className="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
-            {/* Table Header */}
-            <div className="grid grid-cols-12 gap-4 p-6 border-b border-gray-100 bg-gray-50/50 text-xs font-bold text-gray-400 uppercase tracking-wider">
-              <div className="col-span-4 pl-2">Applicant</div>
-              <div className="col-span-3">Program Info</div>
-              <div className="col-span-2">Date</div>
-              <div className="col-span-2">Status</div>
-              <div className="col-span-1 text-right">Action</div>
-            </div>
+            <div className="overflow-x-auto">
+              <div className="min-w-[900px]">
+                {/* Table Header */}
+                <div className="grid grid-cols-12 gap-4 p-6 border-b border-gray-100 bg-gray-50/50 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                  <div className="col-span-4 pl-2">Applicant</div>
+                  <div className="col-span-3">Program Info</div>
+                  <div className="col-span-2">Date</div>
+                  <div className="col-span-2">Status</div>
+                  <div className="col-span-1 text-right">Action</div>
+                </div>
 
-            <div className="divide-y divide-gray-100">
-              <AnimatePresence mode="popLayout">
-                {filteredApplications.map((app, index) => (
-                  <motion.div
-                    key={app._id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ delay: index * 0.03 }}
-                    layout
-                    onClick={() => {
-                      setSelectedApp(app);
-                      setShowDetails(true);
-                    }}
-                    className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-gray-50 transition-colors cursor-pointer group"
-                  >
-                    {/* Applicant */}
-                    <div className="col-span-4 flex items-center gap-4 pl-2">
-                      <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 font-bold text-sm group-hover:bg-black group-hover:text-white transition-colors">
-                        {app.name.charAt(0)}
-                      </div>
-                      <div className="min-w-0">
-                        <h4 className="font-bold text-gray-900 text-sm truncate">{app.name}</h4>
-                        <p className="text-xs text-gray-500 truncate">{app.email}</p>
-                      </div>
-                    </div>
+                <div className="divide-y divide-gray-100">
+                  <AnimatePresence mode="popLayout">
+                    {filteredApplications.map((app, index) => (
+                      <motion.div
+                        key={app._id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.98 }}
+                        transition={{ delay: index * 0.03 }}
+                        layout
+                        onClick={() => {
+                          setSelectedApp(app);
+                          setShowDetails(true);
+                        }}
+                        className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-gray-50 transition-colors cursor-pointer group"
+                      >
+                        {/* Applicant */}
+                        <div className="col-span-4 flex items-center gap-4 pl-2">
+                          <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 font-bold text-sm group-hover:bg-black group-hover:text-white transition-colors">
+                            {app.name.charAt(0)}
+                          </div>
+                          <div className="min-w-0">
+                            <h4 className="font-bold text-gray-900 text-sm truncate">{app.name}</h4>
+                            <p className="text-xs text-gray-500 truncate">{app.email}</p>
+                          </div>
+                        </div>
 
-                    {/* Program */}
-                    <div className="col-span-3">
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-gray-900 truncate">
-                          {app.department || 'Not Assigned'}
-                        </span>
-                        <span className="text-xs text-gray-500 truncate">
-                          {app.course || 'Pending'}
-                        </span>
-                      </div>
-                    </div>
+                        {/* Program */}
+                        <div className="col-span-3">
+                          <div className="flex flex-col">
+                            <span className="text-sm font-medium text-gray-900 truncate">
+                              {app.department || 'Not Assigned'}
+                            </span>
+                            <span className="text-xs text-gray-500 truncate">
+                              {app.course || 'Pending'}
+                            </span>
+                          </div>
+                        </div>
 
-                    {/* Date */}
-                    <div className="col-span-2">
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <Calendar className="w-3.5 h-3.5 text-gray-400" />
-                        {new Date(app.createdAt).toLocaleDateString()}
-                      </div>
-                    </div>
+                        {/* Date */}
+                        <div className="col-span-2">
+                          <div className="flex items-center gap-2 text-sm text-gray-600">
+                            <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                            {new Date(app.createdAt).toLocaleDateString()}
+                          </div>
+                        </div>
 
-                    {/* Status */}
-                    <div className="col-span-2">
-                      <span className={cn(
-                        "px-2.5 py-1 rounded-full text-xs font-semibold border flex items-center gap-1.5 w-fit",
-                        getStatusColor(app.status)
-                      )}>
-                        {getStatusIcon(app.status)}
-                        {app.status}
-                      </span>
-                    </div>
+                        {/* Status */}
+                        <div className="col-span-2">
+                          <span className={cn(
+                            "px-2.5 py-1 rounded-full text-xs font-semibold border flex items-center gap-1.5 w-fit",
+                            getStatusColor(app.status)
+                          )}>
+                            {getStatusIcon(app.status)}
+                            {app.status}
+                          </span>
+                        </div>
 
-                    {/* Action */}
-                    <div className="col-span-1 flex justify-end pr-2">
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 group-hover:bg-white group-hover:shadow-sm group-hover:text-gray-900 transition-all">
-                        <ChevronRight className="w-4 h-4" />
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+                        {/* Action */}
+                        <div className="col-span-1 flex justify-end pr-2">
+                          <div className="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 group-hover:bg-white group-hover:shadow-sm group-hover:text-gray-900 transition-all">
+                            <ChevronRight className="w-4 h-4" />
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </div>
+              </div>
             </div>
           </div>
         )}

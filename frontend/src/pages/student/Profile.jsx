@@ -158,7 +158,7 @@ export default function StudentProfile() {
           <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/20 to-transparent" />
         </div>
         
-        <div className="px-8 md:px-12 relative -mt-16 flex flex-col md:flex-row items-end md:items-end gap-6">
+        <div className="px-8 md:px-12 relative -mt-16 flex flex-col md:flex-row items-center md:items-end gap-6">
           <div className="relative group">
             <div className="h-32 w-32 md:h-40 md:w-40 rounded-full border-4 border-white bg-gray-200 overflow-hidden shadow-xl relative">
               <img 
