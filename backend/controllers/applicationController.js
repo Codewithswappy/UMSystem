@@ -202,22 +202,66 @@ export const approveApplication = async (req, res) => {
                 }
             });
         } else {
-            // User already exists, just update approval status
-            user.isApproved = true;
-            user.studentId = student._id;
-            await user.save();
+            // User already exists
+            console.log('ℹ️ User account already exists for email:', application.email);
 
-            console.log('ℹ️ User account already exists, updated approval status');
+            if (user.role === 'student') {
+                // Generate new temporary password for re-approval
+                const temporaryPassword = generateTemporaryPassword();
+                
+                // Update user with new temporary password
+                user.password = temporaryPassword; // Will be hashed by pre-save hook
+                user.mustChangePassword = true;
+                user.isApproved = true;
+                user.studentId = student._id;
+                user.applicationId = application._id;
+                
+                await user.save();
+                console.log('✅ Existing user account updated with new temporary password');
 
-            res.status(200).json({
-                success: true,
-                message: 'Application approved successfully (student already exists)',
-                data: {
-                    application,
-                    student,
-                    emailSent: false
+                // Send approval email with new credentials
+                console.log('📧 Sending re-approval email...');
+                const emailResult = await sendApprovalEmail(
+                    application.email,
+                    application.name,
+                    student.studentId,
+                    temporaryPassword
+                );
+
+                if (!emailResult.success) {
+                    console.error('⚠️ Email sending failed for re-approval');
                 }
-            });
+
+                res.status(200).json({
+                    success: true,
+                    message: emailResult.success
+                        ? 'Application approved, existing user credential reset, and email sent successfully'
+                        : 'Application approved and user reset, but email sending failed. Please check email configuration.',
+                    data: {
+                        application,
+                        student,
+                        emailSent: emailResult.success,
+                        emailError: emailResult.success ? null : emailResult.error
+                    }
+                });
+            } else {
+                // Non-student user exists with same email (e.g. Admin/Faculty)
+                // We don't reset password, just ensure approval status if relevant
+                user.isApproved = true;
+                await user.save();
+                
+                console.log('⚠️ User exists with non-student role:', user.role);
+                
+                res.status(200).json({
+                    success: true,
+                    message: `Application approved. User already exists with role: ${user.role}. No email sent.`,
+                    data: {
+                        application,
+                        student,
+                        emailSent: false
+                    }
+                });
+            }
         }
     } catch (error) {
         console.error('❌ Error approving application:', error);
