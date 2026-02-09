@@ -4,6 +4,7 @@ import { CreditCard, Download, Clock, CheckCircle2, AlertCircle, DollarSign, Loa
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Badge } from "../../components/ui/badge";
+import { API_BASE_URL } from '../../services/api';
 
 export default function StudentBilling() {
   const [fees, setFees] = useState([]);
@@ -17,7 +18,7 @@ export default function StudentBilling() {
   const fetchFees = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/fees/myfees', {
+      const response = await fetch(`${API_BASE_URL}/fees/myfees`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -35,7 +36,7 @@ export default function StudentBilling() {
     setProcessingId(feeId);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/fees/${feeId}/pay`, {
+      const response = await fetch(`${API_BASE_URL}/fees/${feeId}/pay`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',

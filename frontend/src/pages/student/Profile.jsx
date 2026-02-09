@@ -4,7 +4,7 @@ import { User, Mail, Phone, MapPin, Book, Calendar, Edit2, Camera, Save, X, Load
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
-import { studentAPI } from "../../services/api";
+import { studentAPI, getServerUrl } from "../../services/api";
 
 export default function StudentProfile() {
   const [student, setStudent] = useState(null);
@@ -162,7 +162,7 @@ export default function StudentProfile() {
           <div className="relative group">
             <div className="h-32 w-32 md:h-40 md:w-40 rounded-full border-4 border-white bg-gray-200 overflow-hidden shadow-xl relative">
               <img 
-                src={previewImage || (student.profilePicture ? `http://localhost:5000/${student.profilePicture}` : `https://api.dicebear.com/7.x/avataaars/svg?seed=${student.name}`)} 
+                src={previewImage || (student.profilePicture ? `${getServerUrl()}/${student.profilePicture}` : `https://api.dicebear.com/7.x/avataaars/svg?seed=${student.name}`)} 
                 alt="Profile" 
                 className="h-full w-full object-cover" 
               />

@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/ca
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Badge } from "../../components/ui/badge";
+import { API_BASE_URL, getServerUrl } from '../../services/api';
 
 export default function FacultyAssignments() {
   const [assignments, setAssignments] = useState([]);
@@ -41,7 +42,7 @@ export default function FacultyAssignments() {
   const fetchAssignments = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/assignments/faculty/my-assignments', {
+      const response = await fetch(`${API_BASE_URL}/assignments/faculty/my-assignments`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -59,7 +60,7 @@ export default function FacultyAssignments() {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await fetch('http://localhost:5000/api/faculty/dashboard', {
+      const response = await fetch(`${API_BASE_URL}/faculty/dashboard`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -80,7 +81,7 @@ export default function FacultyAssignments() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/assignments/create', {
+      const response = await fetch(`${API_BASE_URL}/assignments/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -106,7 +107,7 @@ export default function FacultyAssignments() {
     setSelectedAssignment(assignment);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/assignments/faculty/${assignment._id}/submissions`, {
+      const response = await fetch(`${API_BASE_URL}/assignments/faculty/${assignment._id}/submissions`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -122,7 +123,7 @@ export default function FacultyAssignments() {
   const gradeSubmission = async (submissionId, marks, remarks) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/assignments/faculty/grade/${submissionId}`, {
+      const response = await fetch(`${API_BASE_URL}/assignments/faculty/grade/${submissionId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -384,7 +385,7 @@ export default function FacultyAssignments() {
                             <div className="flex items-center gap-2">
                               <FileText className="h-4 w-4 text-gray-500" />
                               <a
-                                href={`http://localhost:5000${submission.submittedFile.url}`}
+                                href={`${getServerUrl()}${submission.submittedFile.url}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-sm text-blue-600 hover:underline"

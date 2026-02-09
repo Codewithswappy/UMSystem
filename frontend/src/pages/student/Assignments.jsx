@@ -18,6 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/ca
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Badge } from "../../components/ui/badge";
+import { API_BASE_URL } from '../../services/api';
 
 export default function StudentAssignments() {
   const [assignments, setAssignments] = useState([]);
@@ -36,7 +37,7 @@ export default function StudentAssignments() {
   const fetchAssignments = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/assignments/student/my-assignments', {
+      const response = await fetch(`${API_BASE_URL}/assignments/student/my-assignments`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -64,7 +65,7 @@ export default function StudentAssignments() {
       formData.append('file', submitData.file);
       formData.append('remarks', submitData.remarks);
 
-      const response = await fetch(`http://localhost:5000/api/assignments/student/submit/${selectedAssignment._id}`, {
+      const response = await fetch(`${API_BASE_URL}/assignments/student/submit/${selectedAssignment._id}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

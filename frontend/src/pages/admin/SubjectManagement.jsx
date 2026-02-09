@@ -6,6 +6,7 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 import { Badge } from '../../components/ui/badge';
+import { API_BASE_URL } from '../../services/api';
 
 export default function SubjectManagement() {
   const [subjects, setSubjects] = useState([]);
@@ -68,7 +69,7 @@ export default function SubjectManagement() {
       if (filters.course) queryParams.append('course', filters.course);
       if (filters.semester) queryParams.append('semester', filters.semester);
 
-      const response = await fetch(`http://localhost:5000/api/subjects?${queryParams}`, {
+      const response = await fetch(`${API_BASE_URL}/subjects?${queryParams}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -87,8 +88,8 @@ export default function SubjectManagement() {
     try {
       const token = localStorage.getItem('token');
       const url = editingSubject
-        ? `http://localhost:5000/api/subjects/${editingSubject._id}`
-        : 'http://localhost:5000/api/subjects';
+        ? `${API_BASE_URL}/subjects/${editingSubject._id}`
+        : `${API_BASE_URL}/subjects`;
       
       const response = await fetch(url, {
         method: editingSubject ? 'PUT' : 'POST',
@@ -117,7 +118,7 @@ export default function SubjectManagement() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/subjects/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/subjects/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

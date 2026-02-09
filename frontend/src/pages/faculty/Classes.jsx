@@ -7,6 +7,7 @@ import { Badge } from "../../components/ui/badge";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
+import { API_BASE_URL } from '../../services/api';
 
 export default function FacultyClasses() {
   const [classes, setClasses] = useState([]);
@@ -37,7 +38,7 @@ export default function FacultyClasses() {
   const fetchClasses = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/faculty/dashboard', {
+      const response = await fetch(`${API_BASE_URL}/faculty/dashboard`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -103,7 +104,7 @@ export default function FacultyClasses() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/subjects', {
+      const response = await fetch(`${API_BASE_URL}/subjects`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -130,7 +131,7 @@ export default function FacultyClasses() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/subjects/${selectedClass._id}`, {
+      const response = await fetch(`${API_BASE_URL}/subjects/${selectedClass._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

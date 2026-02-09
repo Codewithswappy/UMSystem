@@ -7,6 +7,7 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Textarea } from "../../components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
+import { API_BASE_URL } from '../../services/api';
 
 export default function FacultyEvents() {
   const [events, setEvents] = useState([]);
@@ -28,7 +29,7 @@ export default function FacultyEvents() {
   const fetchEvents = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/events', {
+      const response = await fetch(`${API_BASE_URL}/events`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -49,7 +50,7 @@ export default function FacultyEvents() {
       // Combine date and time
       const eventDate = new Date(`${newEvent.date}T${newEvent.time}`);
       
-      const response = await fetch('http://localhost:5000/api/events', {
+      const response = await fetch(`${API_BASE_URL}/events`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

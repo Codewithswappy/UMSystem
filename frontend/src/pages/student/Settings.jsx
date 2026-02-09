@@ -5,6 +5,7 @@ import { Card, CardContent } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
+import { API_BASE_URL } from '../../services/api';
 
 export default function StudentSettings() {
   const [activeTab, setActiveTab] = useState("profile");
@@ -32,7 +33,7 @@ export default function StudentSettings() {
         }
         setStudentId(user.student);
 
-        const response = await fetch(`http://localhost:5000/api/students/${user.student}`, {
+        const response = await fetch(`${API_BASE_URL}/students/${user.student}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await response.json();
@@ -68,7 +69,7 @@ export default function StudentSettings() {
     setSaving(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/students/${studentId}`, {
+      const response = await fetch(`${API_BASE_URL}/students/${studentId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -4,7 +4,7 @@ import { Search, Plus, Filter, Loader2, X, Trash2, Edit2, BookOpen } from "lucid
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
-import { facultyAPI } from "../../services/api";
+import { facultyAPI, API_BASE_URL } from "../../services/api";
 
 export default function FacultyManagement() {
   const [faculty, setFaculty] = useState([]);
@@ -39,7 +39,7 @@ export default function FacultyManagement() {
       if (dept) queryParams.append('department', dept);
       if (course) queryParams.append('course', course);
       
-      const response = await fetch(`http://localhost:5000/api/subjects?${queryParams}`, {
+      const response = await fetch(`${API_BASE_URL}/subjects?${queryParams}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -56,7 +56,7 @@ export default function FacultyManagement() {
   const handleAssignSubjects = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/subjects/assign/faculty', {
+      const response = await fetch(`${API_BASE_URL}/subjects/assign/faculty`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

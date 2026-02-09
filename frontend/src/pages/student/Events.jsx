@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, MapPin, Clock, Users, ArrowRight, Share2, Heart, Loader2, X } from "lucide-react";
 import { Card, CardContent } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
+import { API_BASE_URL } from '../../services/api';
 
 export default function StudentEvents() {
   const [events, setEvents] = useState([]);
@@ -15,7 +16,7 @@ export default function StudentEvents() {
   const fetchEvents = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/events', {
+      const response = await fetch(`${API_BASE_URL}/events`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();

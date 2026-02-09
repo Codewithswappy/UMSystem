@@ -7,6 +7,7 @@ import { Switch } from "../../components/ui/switch";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from '../../services/api';
 
 export default function FacultySettings() {
   const [activeTab, setActiveTab] = useState("profile");
@@ -40,7 +41,7 @@ export default function FacultySettings() {
       }
 
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/faculty/${facultyId}`, {
+      const response = await fetch(`${API_BASE_URL}/faculty/${facultyId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 

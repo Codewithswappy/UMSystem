@@ -4,7 +4,7 @@ import { Search, Plus, Filter, Loader2, X, Trash2, Edit2, User, BookOpen } from 
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
-import { studentAPI } from "../../services/api";
+import { studentAPI, API_BASE_URL } from "../../services/api";
 
 export default function StudentManagement() {
   const [students, setStudents] = useState([]);
@@ -176,7 +176,7 @@ export default function StudentManagement() {
                           if (!window.confirm(`Auto-assign subjects for ${student.name}?`)) return;
                           try {
                             const token = localStorage.getItem('token');
-                            const response = await fetch('http://localhost:5000/api/subjects/assign/auto', {
+                            const response = await fetch(`${API_BASE_URL}/subjects/assign/auto`, {
                               method: 'POST',
                               headers: {
                                 'Content-Type': 'application/json',

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/ca
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Badge } from "../../components/ui/badge";
+import { API_BASE_URL } from '../../services/api';
 
 export default function FacultyGrading() {
   const [subjects, setSubjects] = useState([]);
@@ -22,7 +23,7 @@ export default function FacultyGrading() {
   const fetchSubjects = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/faculty/dashboard', {
+      const response = await fetch(`${API_BASE_URL}/faculty/dashboard`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -44,7 +45,7 @@ export default function FacultyGrading() {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(
-        `http://localhost:5000/api/results/faculty/students?subjectId=${selectedSubject}&semester=${semester}&academicYear=${academicYear}`,
+        `${API_BASE_URL}/results/faculty/students?subjectId=${selectedSubject}&semester=${semester}&academicYear=${academicYear}`,
         { headers: { 'Authorization': `Bearer ${token}` } }
       );
       const data = await response.json();
@@ -117,7 +118,7 @@ export default function FacultyGrading() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/results/faculty/submit-grades', {
+      const response = await fetch(`${API_BASE_URL}/results/faculty/submit-grades`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

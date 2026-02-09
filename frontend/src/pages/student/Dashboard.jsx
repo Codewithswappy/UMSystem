@@ -31,6 +31,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Badge } from "../../components/ui/badge";
+import { API_BASE_URL } from '../../services/api';
 
 export default function StudentDashboard() {
   const [studentProfile, setStudentProfile] = useState(null);
@@ -56,7 +57,7 @@ export default function StudentDashboard() {
           return;
         }
 
-        const profileResponse = await fetch(`http://localhost:5000/api/students/${user.student}`, {
+        const profileResponse = await fetch(`${API_BASE_URL}/students/${user.student}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const profileData = await profileResponse.json();
@@ -66,7 +67,7 @@ export default function StudentDashboard() {
         }
 
         // Fetch Announcements
-        const annResponse = await fetch('http://localhost:5000/api/announcements', {
+        const annResponse = await fetch(`${API_BASE_URL}/announcements`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const annData = await annResponse.json();
@@ -75,7 +76,7 @@ export default function StudentDashboard() {
         }
 
         // Fetch Events
-        const eventResponse = await fetch('http://localhost:5000/api/events', {
+        const eventResponse = await fetch(`${API_BASE_URL}/events`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const eventData = await eventResponse.json();

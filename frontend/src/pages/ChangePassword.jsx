@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Eye, EyeOff, CheckCircle, Loader2 } from 'lucide-react';
 import axios from 'axios';
+import { API_BASE_URL } from '../services/api';
 
 export default function ChangePassword() {
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ export default function ChangePassword() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/change-password', {
+      const response = await axios.post(`${API_BASE_URL}/auth/change-password`, {
         userId: user._id,
         newPassword: formData.newPassword
       });

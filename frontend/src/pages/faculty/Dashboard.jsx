@@ -27,6 +27,7 @@ import {
   Tooltip, 
   ResponsiveContainer 
 } from 'recharts';
+import { API_BASE_URL } from '../../services/api';
 
 export default function FacultyDashboard() {
   const [dashboardData, setDashboardData] = useState(null);
@@ -40,7 +41,7 @@ export default function FacultyDashboard() {
         const token = localStorage.getItem('token');
         
         // Fetch Dashboard Data
-        const dashResponse = await fetch('http://localhost:5000/api/faculty/dashboard', {
+        const dashResponse = await fetch(`${API_BASE_URL}/faculty/dashboard`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const dashData = await dashResponse.json();
@@ -49,7 +50,7 @@ export default function FacultyDashboard() {
         }
 
         // Fetch Announcements
-        const annResponse = await fetch('http://localhost:5000/api/announcements', {
+        const annResponse = await fetch(`${API_BASE_URL}/announcements`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const annData = await annResponse.json();
@@ -58,7 +59,7 @@ export default function FacultyDashboard() {
         }
 
         // Fetch Events
-        const eventResponse = await fetch('http://localhost:5000/api/events', {
+        const eventResponse = await fetch(`${API_BASE_URL}/events`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const eventData = await eventResponse.json();

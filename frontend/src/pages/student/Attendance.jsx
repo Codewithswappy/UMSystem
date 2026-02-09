@@ -4,6 +4,7 @@ import { Calendar as CalendarIcon, CheckCircle2, XCircle, Clock, AlertCircle, Lo
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { cn } from "../../lib/utils";
+import { API_BASE_URL } from '../../services/api';
 
 export default function StudentAttendance() {
   const [attendanceData, setAttendanceData] = useState([]);
@@ -24,7 +25,7 @@ export default function StudentAttendance() {
   const fetchAttendance = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/attendance/my-attendance', {
+      const response = await fetch(`${API_BASE_URL}/attendance/my-attendance`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();

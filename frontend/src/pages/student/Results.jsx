@@ -16,6 +16,7 @@ import { Badge } from "../../components/ui/badge";
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import autoTable from 'jspdf-autotable';
+import { API_BASE_URL } from '../../services/api';
 
 export default function StudentResults() {
   const [results, setResults] = useState([]);
@@ -37,7 +38,7 @@ export default function StudentResults() {
       const token = localStorage.getItem('token');
       const user = JSON.parse(localStorage.getItem('user'));
       
-      const response = await fetch(`http://localhost:5000/api/students/${user.student}`, {
+      const response = await fetch(`${API_BASE_URL}/students/${user.student}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -55,8 +56,8 @@ export default function StudentResults() {
     try {
       const token = localStorage.getItem('token');
       const url = selectedSemester === 'all' 
-        ? 'http://localhost:5000/api/results/student/my-results'
-        : `http://localhost:5000/api/results/student/my-results?semester=${selectedSemester}`;
+        ? `${API_BASE_URL}/results/student/my-results`
+        : `${API_BASE_URL}/results/student/my-results?semester=${selectedSemester}`;
       
       const response = await fetch(url, {
         headers: { 'Authorization': `Bearer ${token}` }

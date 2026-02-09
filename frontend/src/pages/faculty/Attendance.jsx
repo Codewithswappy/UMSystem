@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/ca
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Badge } from "../../components/ui/badge";
+import { API_BASE_URL } from '../../services/api';
 
 export default function FacultyAttendance() {
   const [selectedSubjectId, setSelectedSubjectId] = useState("");
@@ -23,7 +24,7 @@ export default function FacultyAttendance() {
         const token = localStorage.getItem('token');
         console.log('🔑 Token:', token ? 'EXISTS' : 'MISSING');
         
-        const response = await fetch('http://localhost:5000/api/attendance/my-students', {
+        const response = await fetch(`${API_BASE_URL}/attendance/my-students`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await response.json();
@@ -100,7 +101,7 @@ export default function FacultyAttendance() {
         relevantStudents.forEach(s => console.log(`  - ${s.name}`));
 
         // Fetch existing attendance for this subject and date
-        const response = await fetch(`http://localhost:5000/api/attendance/class?subject=${selectedSubjectId}&date=${attendanceDate}`, {
+        const response = await fetch(`${API_BASE_URL}/attendance/class?subject=${selectedSubjectId}&date=${attendanceDate}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const attendanceData = await response.json();
@@ -147,7 +148,7 @@ export default function FacultyAttendance() {
       const token = localStorage.getItem('token');
       
       const promises = filteredStudents.map(student => {
-        return fetch('http://localhost:5000/api/attendance/mark', {
+        return fetch(`${API_BASE_URL}/attendance/mark`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

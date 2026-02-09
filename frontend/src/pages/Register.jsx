@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserPlus, Loader2, ChevronRight, ChevronLeft, Check } from 'lucide-react';
 import axios from 'axios';
+import { API_BASE_URL } from '../services/api';
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -93,7 +94,7 @@ export default function RegisterPage() {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', formData);
+      const response = await axios.post(`${API_BASE_URL}/auth/register`, formData);
       
       if (response.data.success) {
         setSuccess(true);

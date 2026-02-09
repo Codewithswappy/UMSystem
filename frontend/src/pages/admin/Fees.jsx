@@ -13,6 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../../components/ui/dropdown-menu";
+import { API_BASE_URL } from '../../services/api';
 
 export default function AdminFees() {
   const [fees, setFees] = useState([]);
@@ -37,7 +38,7 @@ export default function AdminFees() {
   const fetchFees = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/fees', {
+      const response = await fetch(`${API_BASE_URL}/fees`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -54,7 +55,7 @@ export default function AdminFees() {
   const fetchStudents = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/students', {
+      const response = await fetch(`${API_BASE_URL}/students`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -70,7 +71,7 @@ export default function AdminFees() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/fees', {
+      const response = await fetch(`${API_BASE_URL}/fees`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
