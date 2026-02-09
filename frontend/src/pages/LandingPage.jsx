@@ -46,8 +46,8 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
           {/* Logo Icon */}
-          <div className="w-12 h-12 bg-transparent rounded-full flex items-center justify-center">
-           <img src="/Logo2.png" alt="Logo" className="h-12 w-auto object-contain" />
+          <div className="w-12 h-12 bg-transparent rounded-full flex items-center justify-center overflow-hidden">
+           <img src="/Logo2.png" alt="Logo" className="h-12 w-12 max-w-full max-h-full object-contain" />
           </div>
           <span className="text-2xl font-bold text-black tracking-tight">UMS</span>
         </div>
