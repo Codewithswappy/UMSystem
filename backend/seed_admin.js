@@ -32,7 +32,7 @@ const seedAdmin = async () => {
         console.error('Error seeding admin:', error);
     } finally {
         await mongoose.disconnect();
-        console.log('Disconnected');
+        console.log('Disconnected'); 
     }
 };
 

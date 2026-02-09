@@ -46,7 +46,7 @@ const Navbar = () => {
         <div className="flex items-center gap-2">
           {/* Logo Icon */}
           <div className="w-12 h-12 bg-transparent rounded-full flex items-center justify-center">
-           <img src="./public/Logo2.png" alt="Logo" />
+           <img src="/Logo2.png" alt="Logo" />
           </div>
           <span className="text-2xl font-bold text-black tracking-tight">UMS</span>
         </div>
@@ -316,7 +316,7 @@ const AboutUs = () => {
             <div className="absolute -inset-4 bg-orange-500/10 rounded-[2.5rem] -rotate-2 group-hover:rotate-0 transition-transform duration-500" />
             <div className="relative rounded-[2rem] overflow-hidden shadow-2xl">
                 <img 
-                src="./public/uniHeroSec.jpg" 
+                src="/uniHeroSec.jpg" 
                 alt="University Campus" 
                 className="w-full h-[600px] object-cover transform group-hover:scale-105 transition-transform duration-700"
                 />
