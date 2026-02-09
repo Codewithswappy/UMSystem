@@ -330,7 +330,7 @@ export default function StudentAssignments() {
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <label className="text-sm font-medium text-gray-700">Assignment</label>
-                    <span className="text-xs text-gray-400">{selectedSubject?.name}</span>
+                    <span className="text-xs text-gray-400">{selectedAssignment?.subject?.name}</span>
                   </div>
                   <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
                     <p className="text-gray-900 font-medium">{selectedAssignment?.title}</p>

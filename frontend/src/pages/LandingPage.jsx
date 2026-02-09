@@ -9,7 +9,6 @@ import {
   Star, 
   Users, 
   Shield, 
-  Zap, 
   Globe,
   ChevronDown,
   ChevronRight,
@@ -18,7 +17,9 @@ import {
   GraduationCap,
   BookOpen,
   Award,
-  Clock
+  Clock,
+  Lock,
+  Activity
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -236,7 +237,7 @@ const Features = () => {
           <motion.div 
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.3 }}
-            className="relative rounded-lg overflow-hidden shadow-2xl border border-gray-100"
+            className="relative overflow-hidden shadow-2xl border border-gray-100"
           >
              <img 
                src="/featuresRight.png" 
@@ -250,25 +251,140 @@ const Features = () => {
   );
 };
 
+const CardVisual = ({ type }) => {
+  switch (type) {
+    case 'student':
+      return (
+        <div className="w-full h-full flex items-center justify-center bg-orange-50/30">
+          <motion.div 
+            className="relative bg-white p-4  shadow-sm border border-orange-100/50 w-48"
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
+                <Users size={20} />
+              </div>
+              <div className="flex-1 space-y-2">
+                <div className="h-2 w-20 bg-gray-100 rounded-full" />
+                <div className="h-2 w-14 bg-gray-100 rounded-full" />
+              </div>
+            </div>
+            <div className="space-y-2 pl-1">
+              <div className="h-1.5 w-full bg-gray-50 rounded-full" />
+              <div className="h-1.5 w-5/6 bg-gray-50 rounded-full" />
+            </div>
+            
+            {/* Floating Elements */}
+            <motion.div 
+              className="absolute -right-4 -top-4 bg-white p-2  shadow-sm border border-orange-50 text-orange-500"
+              animate={{ rotate: [0, 10, 0], scale: [1, 1.1, 1] }}
+              transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+            >
+              <GraduationCap size={16} />
+            </motion.div>
+          </motion.div>
+        </div>
+      );
+    case 'security':
+      return (
+        <div className="w-full h-full flex items-center justify-center bg-orange-50/30">
+          <div className="relative">
+             {/* Radar Rings */}
+            {[1, 2, 3].map((i) => (
+              <motion.div
+                key={i}
+                className="absolute inset-0 border border-orange-500/20"
+                initial={{ scale: 1, opacity: 0.5 }}
+                animate={{ scale: 1.5 + (i * 0.2), opacity: 0 }}
+                transition={{ duration: 2, repeat: Infinity, delay: i * 0.4, ease: "easeOut" }}
+              />
+            ))}
+            
+            <div className="relative z-10 bg-white p-4  shadow-sm border border-orange-100">
+              <Shield className="text-orange-500 w-12 h-12" strokeWidth={1.5} />
+              <motion.div 
+                className="absolute -bottom-1 -right-1 bg-black text-white p-1.5  border-2 border-white"
+                animate={{ opacity: [1, 0.5, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <Lock size={12} />
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      );
+    case 'uptime':
+      return (
+        <div className="w-full h-full flex items-center justify-center bg-orange-50/30">
+          <div className="bg-white p-4  shadow-sm border border-orange-100 w-52">
+            <div className="flex items-center justify-between mb-4 border-b border-gray-50 pb-2">
+              <span className="text-[10px] font-bold text-gray-400">SYSTEM STATUS</span>
+              <Activity size={12} className="text-green-500" />
+            </div>
+            <div className="space-y-3">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <motion.div 
+                    className="w-2 h-2 rounded-full bg-green-500"
+                    animate={{ opacity: [0.4, 1, 0.4] }}
+                    transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
+                  />
+                  <div className="h-1.5 w-full bg-gray-100 rounded-full" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    case 'implementation':
+      return (
+        <div className="w-full h-full flex items-center justify-center bg-orange-50/30">
+          <div className="bg-white p-5  shadow-sm border border-orange-100 w-52">
+             <div className="flex justify-between mb-2">
+                <div className="h-1.5 w-12 bg-gray-200 rounded-full" />
+                <span className="text-[10px] font-bold text-orange-500">100%</span>
+             </div>
+             
+             <div className="h-2 w-full bg-gray-100 rounded-2xl overflow-hidden mb-4">
+                <motion.div 
+                  className="h-full bg-orange-500 rounded-2xl"
+                  animate={{ width: ["0%", "100%"] }}
+                  transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
+                />
+             </div>
+             
+             <div className="space-y-2 opacity-50">
+               <div className="w-full h-1 bg-gray-100 rounded-2xl" />
+               <div className="w-2/3 h-1 bg-gray-100 rounded-2xl" />
+             </div>
+          </div>
+        </div>
+      );
+    default:
+      return null;
+  }
+};
+
 const WhyChooseUs = () => {
   const reasons = [
     {
-      icon: <GraduationCap size={24} />,
+      type: 'student',
       title: "Student-Centric",
       desc: "Designed to improve the student experience from admission to graduation."
     },
     {
-      icon: <Shield size={24} />,
+      type: 'security',
       title: "Enterprise Security",
       desc: "Bank-grade encryption and compliance with international data standards."
     },
     {
-      icon: <Clock size={24} />,
+      type: 'uptime',
       title: "99.9% Uptime",
       desc: "Reliable infrastructure ensuring your university never stops running."
     },
     {
-      icon: <Zap size={24} />,
+      type: 'implementation',
       title: "Fast Implementation",
       desc: "Get your campus up and running in weeks, not years."
     }
@@ -276,9 +392,6 @@ const WhyChooseUs = () => {
 
   return (
     <section id="why-us" className="py-32 px-6 bg-[#222222] text-white rounded-[3rem] mx-4 md:mx-6 mb-12 relative overflow-hidden">
-      {/* Decorative background blur */}
-      {/* <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-orange-500/10 rounded-full blur-[120px] pointer-events-none" /> */}
-
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-20">
           <h2 className="font-bold text-5xl md:text-7xl mb-6 tracking-tight">Why Choose UMS?</h2>
@@ -292,13 +405,22 @@ const WhyChooseUs = () => {
             <motion.div 
               key={index}
               whileHover={{ y: -5 }}
-              className="group bg-[#F3F0E6] backdrop-blur-sm border border-white/5 p-8 rounded-3xl hover:bg-[#F3F0E6]/90 transition-all duration-300 h-[360px]"
+              className="group bg-[#F3F0E6] overflow-hidden rounded-2xl hover:bg-white transition-all duration-300 h-[400px] flex flex-col"
             >
-              <div className="w-15 h-15 text-orange-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                {reason.icon}
+              {/* Visual Skeleton Area */}
+              <div className="h-[200px] w-full border-b border-gray-100/50 relative overflow-hidden">
+                 <CardVisual type={reason.type} />
               </div>
-              <h3 className="text-xl font-bold mb-3 text-black">{reason.title}</h3>
-              <p className="text-gray-500 leading-relaxed text-sm">{reason.desc}</p>
+              
+              {/* Content Area */}
+              <div className="p-4 flex flex-col flex-1">
+                <h3 className="text-xl font-bold text-black group-hover:text-orange-600 transition-colors">{reason.title}</h3>
+                <p className="text-gray-500 leading-relaxed text-sm">{reason.desc}</p>
+                
+                <div className="mt-auto pt-4 flex items-center text-sm font-medium text-black opacity-50 group-hover:opacity-100 transition-all transform translate-y-0 group-hover:-translate-y-2">
+                  Learn more <ChevronRight size={16} className="ml-1" />
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
