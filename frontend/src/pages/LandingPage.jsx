@@ -47,7 +47,7 @@ const Navbar = () => {
         <div className="flex items-center gap-2">
           {/* Logo Icon */}
           <div className="w-12 h-12 bg-transparent rounded-full flex items-center justify-center">
-           <img src="/Logo2.png" alt="Logo" />
+           <img src="/Logo2.png" alt="Logo" className="h-12 w-auto object-contain" />
           </div>
           <span className="text-2xl font-bold text-black tracking-tight">UMS</span>
         </div>
