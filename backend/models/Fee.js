@@ -39,6 +39,6 @@ const feeSchema = new mongoose.Schema({
     timestamps: true
 });
 
-const Fee = mongoose.model('Fee', feeSchema);
+const Fee = mongoose.model('Fee', feeSchema, 'fees');
 
 export default Fee;

@@ -7,7 +7,8 @@ import {
     deleteFaculty,
     getFacultyStats,
     getDashboardData,
-    getMyStudents
+    getMyStudents,
+    resendFacultyCredentials
 } from '../controllers/facultyController.js';
 import { protect, authorize } from '../middleware/authMiddleware.js';
 
@@ -17,6 +18,7 @@ const router = express.Router();
 router.get('/stats', getFacultyStats);
 router.get('/', getAllFaculty);
 router.post('/', createFaculty); // Admin creates faculty
+router.post('/:id/resend-credentials', resendFacultyCredentials);
 
 // Protected Faculty Routes
 router.get('/dashboard', protect, authorize('faculty'), getDashboardData);

@@ -97,16 +97,20 @@ router.post('/login', async (req, res) => {
     try {
         const { email, password, role } = req.body;
 
+        const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
+        const normalizedPassword = typeof password === 'string' ? password.trim() : '';
+        const normalizedRole = typeof role === 'string' ? role.trim().toLowerCase() : '';
+
         // Validate input
-        if (!email || !password || !role) {
+        if (!normalizedEmail || !normalizedPassword || !normalizedRole) {
             return res.status(400).json({
                 success: false,
                 message: 'Please provide email, password, and role'
             });
         }
 
-        // Find user
-        const user = await User.findOne({ email, role })
+        // Find user by email first so we can return a clear role mismatch error.
+        const user = await User.findOne({ email: normalizedEmail })
             .populate('applicationId')
             .populate('studentId')
             .populate('facultyId')
@@ -119,8 +123,15 @@ router.post('/login', async (req, res) => {
             });
         }
 
+        if (user.role !== normalizedRole) {
+            return res.status(401).json({
+                success: false,
+                message: `Account exists as ${user.role}. Please select ${user.role} role.`
+            });
+        }
+
         // Check password
-        const isPasswordValid = await user.comparePassword(password);
+        const isPasswordValid = await user.comparePassword(normalizedPassword);
         if (!isPasswordValid) {
             return res.status(401).json({
                 success: false,

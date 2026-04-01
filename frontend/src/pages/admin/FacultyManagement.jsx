@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Plus, Filter, Loader2, X, Trash2, Edit2, BookOpen } from "lucide-react";
+import { Search, Plus, Filter, Loader2, X, Trash2, Edit2, BookOpen, Mail } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
@@ -44,7 +44,16 @@ export default function FacultyManagement() {
       });
       const data = await response.json();
       if (data.success) {
-        setAvailableSubjects(data.data);
+        if (Array.isArray(data.data) && data.data.length > 0) {
+          setAvailableSubjects(data.data);
+        } else {
+          // Fallback: allow assignment from all subjects when exact department/course match returns none.
+          const fallbackResponse = await fetch(`${API_BASE_URL}/subjects`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const fallbackData = await fallbackResponse.json();
+          setAvailableSubjects(fallbackData.success ? fallbackData.data : []);
+        }
       }
     } catch (error) {
       console.error('Error fetching subjects:', error);
@@ -136,6 +145,42 @@ export default function FacultyManagement() {
     } catch (error) {
       console.error("Error deleting faculty:", error);
       alert("Failed to delete faculty");
+    }
+  };
+
+  const handleResendCredentials = async (facultyId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/faculty/${facultyId}/resend-credentials`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const contentType = response.headers.get('content-type') || '';
+      let data;
+
+      if (contentType.includes('application/json')) {
+        data = await response.json();
+      } else {
+        const rawText = await response.text();
+        data = {
+          success: false,
+          message: rawText ? rawText.slice(0, 200) : `Request failed with status ${response.status}`
+        };
+      }
+
+      if (data.success) {
+        alert('✅ Faculty credentials resent successfully');
+      } else {
+        const statusInfo = response.status ? ` [${response.status}]` : '';
+        alert('❌ Failed to resend credentials' + statusInfo + ': ' + (data.message || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Error resending credentials:', error);
+      alert('❌ Error resending credentials: ' + (error?.message || 'Network error'));
     }
   };
 
@@ -246,6 +291,15 @@ export default function FacultyManagement() {
 
                     {/* Actions */}
                     <div className="flex justify-end gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="rounded-full hover:bg-white hover:shadow-sm"
+                        title="Resend Credentials"
+                        onClick={() => handleResendCredentials(f._id)}
+                      >
+                        <Mail className="h-4 w-4 text-gray-400" />
+                      </Button>
                       <Button 
                         variant="ghost" 
                         size="icon" 

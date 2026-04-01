@@ -24,7 +24,6 @@ import Attendance from './models/Attendance.js';
 import Application from './models/Application.js';
 import Admin from './models/Admin.js';
 import Fee from './models/Fee.js';
-import bcrypt from 'bcryptjs';
 
 // Load environment variables
 dotenv.config();
@@ -64,6 +63,7 @@ app.use('/uploads', express.static('uploads'));
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/umsystem', {
+      dbName: process.env.MONGODB_DB_NAME || 'umsystem',
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
     });
@@ -113,7 +113,7 @@ app.delete('/api/nuke-db', async (req, res) => {
     // 1. Create Admin Profile
     const adminProfile = await Admin.create({
       name: 'System Admin',
-      email: 'admin@ums.com',
+      email: 'admin@university.edu',
       role: 'Super Admin',
       password: 'admin123' // This will be hashed by Admin model pre-save hook
     });
@@ -122,7 +122,7 @@ app.delete('/api/nuke-db', async (req, res) => {
     // Note: User model hashes password in pre-save hook, so we provide PLAIN TEXT
     await User.create({
       name: 'System Admin',
-      email: 'admin@ums.com',
+      email: 'admin@university.edu',
       password: 'admin123', // Plain text, will be hashed by model
       role: 'admin',
       adminId: adminProfile._id // Link to Admin Profile

@@ -9,6 +9,7 @@ dotenv.config();
 const sampleData = async () => {
     try {
         await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/umsystem', {
+            dbName: process.env.MONGODB_DB_NAME || 'umsystem',
             serverSelectionTimeoutMS: 5000,
             socketTimeoutMS: 45000,
         });

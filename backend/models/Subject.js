@@ -71,6 +71,6 @@ const subjectSchema = new mongoose.Schema({
 // Index for faster queries
 subjectSchema.index({ department: 1, course: 1, semester: 1 });
 
-const Subject = mongoose.model('Subject', subjectSchema);
+const Subject = mongoose.model('Subject', subjectSchema, 'subjects');
 
 export default Subject;

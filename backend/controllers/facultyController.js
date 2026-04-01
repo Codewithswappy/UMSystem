@@ -51,12 +51,20 @@ export const createFaculty = async (req, res) => {
         console.log('👤 Create Faculty Request Received');
         console.log('   Body:', req.body);
 
-        const { email, name } = req.body;
+        const normalizedEmail = (req.body.email || '').trim().toLowerCase();
+        const normalizedName = (req.body.name || '').trim();
+
+        if (!normalizedEmail || !normalizedName) {
+            return res.status(400).json({
+                success: false,
+                message: 'Name and email are required'
+            });
+        }
 
         // Check if faculty with email already exists
-        const existingFaculty = await Faculty.findOne({ email });
+        const existingFaculty = await Faculty.findOne({ email: normalizedEmail });
         if (existingFaculty) {
-            console.log('❌ Faculty email already exists:', email);
+            console.log('❌ Faculty email already exists:', normalizedEmail);
             return res.status(400).json({
                 success: false,
                 message: 'Faculty with this email already exists'
@@ -71,6 +79,8 @@ export const createFaculty = async (req, res) => {
         // Create Faculty Record
         const faculty = await Faculty.create({
             ...req.body,
+            email: normalizedEmail,
+            name: normalizedName,
             facultyId
         });
         console.log('✅ Faculty record created');
@@ -84,34 +94,58 @@ export const createFaculty = async (req, res) => {
         // Create User Account
         const User = (await import('../models/User.js')).default;
 
-        // Check if user exists (shouldn't, but safe to check)
-        let user = await User.findOne({ email });
+        // Check if any user already has this email
+        let user = await User.findOne({ email: normalizedEmail });
+
+        if (user && user.role !== 'faculty') {
+            return res.status(400).json({
+                success: false,
+                message: `Email already used by ${user.role} account`
+            });
+        }
 
         if (!user) {
             console.log('   Creating User account...');
             user = await User.create({
-                email,
+                email: normalizedEmail,
                 password: temporaryPassword,
                 role: 'faculty',
                 isApproved: true,
                 mustChangePassword: true,
                 facultyId: faculty._id,
-                name: name
+                name: normalizedName
             });
             console.log('✅ User account created');
-
-            // Send Email
-            console.log('📧 Calling sendFacultyCredentialsEmail...');
-            const emailResult = await sendFacultyCredentialsEmail(email, name, facultyId, temporaryPassword);
-            console.log('   Email Result:', emailResult);
         } else {
-            console.log('⚠️ User account already exists for this email');
+            // Existing faculty login account: reset credentials and relink profile.
+            user.password = temporaryPassword;
+            user.mustChangePassword = true;
+            user.isApproved = true;
+            user.facultyId = faculty._id;
+            await user.save();
+            console.log('✅ Existing faculty user updated with fresh temporary password');
+        }
+
+        // Send Email
+        console.log('📧 Calling sendFacultyCredentialsEmail...');
+        const emailResult = await sendFacultyCredentialsEmail(normalizedEmail, normalizedName, facultyId, temporaryPassword);
+        console.log('   Email Result:', emailResult);
+
+        if (!emailResult.success) {
+            return res.status(201).json({
+                success: true,
+                message: 'Faculty created, but email could not be sent. Please verify email settings.',
+                data: faculty,
+                emailSent: false,
+                emailError: emailResult.error
+            });
         }
 
         res.status(201).json({
             success: true,
             message: 'Faculty created and credentials sent successfully',
-            data: faculty
+            data: faculty,
+            emailSent: true
         });
     } catch (error) {
         console.error('❌ Error creating faculty:', error);
@@ -288,6 +322,76 @@ export const getDashboardData = async (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Error fetching dashboard data',
+            error: error.message
+        });
+    }
+};
+
+// Resend faculty credentials (Admin)
+export const resendFacultyCredentials = async (req, res) => {
+    try {
+        const faculty = await Faculty.findById(req.params.id);
+
+        if (!faculty) {
+            return res.status(404).json({
+                success: false,
+                message: 'Faculty not found'
+            });
+        }
+
+        const { generateTemporaryPassword, sendFacultyCredentialsEmail } = await import('../utils/emailService.js');
+        const User = (await import('../models/User.js')).default;
+
+        const tempPassword = generateTemporaryPassword();
+        let user = await User.findOne({ email: faculty.email });
+
+        if (!user) {
+            user = await User.create({
+                email: faculty.email,
+                password: tempPassword,
+                role: 'faculty',
+                isApproved: true,
+                mustChangePassword: true,
+                facultyId: faculty._id,
+                name: faculty.name
+            });
+        } else if (user.role !== 'faculty') {
+            return res.status(400).json({
+                success: false,
+                message: `Email already used by ${user.role} account`
+            });
+        } else {
+            user.password = tempPassword;
+            user.mustChangePassword = true;
+            user.isApproved = true;
+            user.facultyId = faculty._id;
+            await user.save();
+        }
+
+        const emailResult = await sendFacultyCredentialsEmail(
+            faculty.email,
+            faculty.name,
+            faculty.facultyId,
+            tempPassword
+        );
+
+        if (!emailResult.success) {
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to send credentials email',
+                error: emailResult.error
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Faculty credentials resent successfully',
+            ...(process.env.NODE_ENV !== 'production' ? { tempPassword } : {})
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Error resending faculty credentials',
             error: error.message
         });
     }

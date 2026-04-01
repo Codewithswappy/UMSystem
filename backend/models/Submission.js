@@ -46,6 +46,6 @@ const submissionSchema = new mongoose.Schema({
 // Index for faster queries
 submissionSchema.index({ assignment: 1, student: 1 }, { unique: true });
 
-const Submission = mongoose.model('Submission', submissionSchema);
+const Submission = mongoose.model('Submission', submissionSchema, 'submissions');
 
 export default Submission;

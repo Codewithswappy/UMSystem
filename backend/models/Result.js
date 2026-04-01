@@ -121,6 +121,6 @@ resultSchema.pre('save', function (next) {
     next();
 });
 
-const Result = mongoose.model('Result', resultSchema);
+const Result = mongoose.model('Result', resultSchema, 'results');
 
 export default Result;

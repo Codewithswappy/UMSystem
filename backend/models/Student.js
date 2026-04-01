@@ -82,6 +82,6 @@ studentSchema.pre('save', function () {
     this.updatedAt = Date.now();
 });
 
-const Student = mongoose.model('Student', studentSchema);
+const Student = mongoose.model('Student', studentSchema, 'students');
 
 export default Student;

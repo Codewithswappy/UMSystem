@@ -86,6 +86,6 @@ facultySchema.pre('save', function () {
     this.updatedAt = Date.now();
 });
 
-const Faculty = mongoose.model('Faculty', facultySchema);
+const Faculty = mongoose.model('Faculty', facultySchema, 'faculties');
 
 export default Faculty;

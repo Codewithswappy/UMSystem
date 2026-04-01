@@ -2,14 +2,20 @@ import Subject from '../models/Subject.js';
 import Student from '../models/Student.js';
 import Faculty from '../models/Faculty.js';
 
+const escapeRegex = (text = '') => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 // Get all subjects
 export const getAllSubjects = async (req, res) => {
     try {
         const { department, course, semester } = req.query;
 
         const filter = {};
-        if (department) filter.department = department;
-        if (course) filter.course = course;
+        if (department) {
+            filter.department = { $regex: `^${escapeRegex(String(department).trim())}$`, $options: 'i' };
+        }
+        if (course) {
+            filter.course = { $regex: `^${escapeRegex(String(course).trim())}$`, $options: 'i' };
+        }
         if (semester) filter.semester = parseInt(semester);
 
         const subjects = await Subject.find(filter).sort({ semester: 1, name: 1 });
